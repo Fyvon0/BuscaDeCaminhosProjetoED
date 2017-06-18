@@ -11,8 +11,13 @@ namespace _16164_16187_Projeto4ED
         public ListaCaminhos (): base()
         { }
 
+        /// <summary>
+        /// Exclui todos os nós que possuem relações com a cidade excluída
+        /// </summary>
+        /// <param name="nomeCidade">Nome da cidade excluída</param>
         public void ExcluirCidade (String nomeCidade)
         {
+            nomeCidade = nomeCidade.Trim();
             anterior = null;
             atual = primeiro;
             while (atual != null)

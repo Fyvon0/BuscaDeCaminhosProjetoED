@@ -23,7 +23,7 @@ namespace _16164_16187_Projeto4ED
 
         private void frmManutCidade_Load(object sender, EventArgs e)
         {
-            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.OpenOrCreate);
+            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.OpenOrCreate); // Lê o arquivo de cidades
             arvoreCidades = new ArvoreDeBusca<Cidade>();
             NoArvore<Cidade> raizTemp = arvoreCidades.Raiz;
             RegistroCidade regCidade = new RegistroCidade();
@@ -34,7 +34,7 @@ namespace _16164_16187_Projeto4ED
             arvoreCidades.raiz = raizTemp;
             arvoreCidades.OndeExibir = pnlArvore;
 
-            FileStream arqCaminhos = new FileStream("arqCaminhos.cam", FileMode.OpenOrCreate);
+            FileStream arqCaminhos = new FileStream("arqCaminhos.cam", FileMode.OpenOrCreate); // Lê o arquivo de caminhos
             listaCaminhos = new ListaCaminhos();
             RegistroCaminho regCaminho = new RegistroCaminho();
             for (int i = 0; i < arqCaminhos.Length/Caminho.TAMANHO_DO_REGISTRO; i++)
@@ -48,6 +48,14 @@ namespace _16164_16187_Projeto4ED
             pnlArvore.Invalidate();
         }
 
+        /// <summary>
+        /// Lê o arquivo recebido por referência, realizando pesquisa binária para inserir em ordem na árvore
+        /// </summary>
+        /// <param name="inicio">Indíce de início</param>
+        /// <param name="fim">Indíce de fim</param>
+        /// <param name="atual">Nó atual da árvore</param>
+        /// <param name="regCidade">Objeto para leitura dos registros</param>
+        /// <param name="arqCidades">Arquivo a ser lido</param>
         private void LeituraDaArvore(long inicio, long fim, ref NoArvore<Cidade> atual, ref RegistroCidade regCidade, ref FileStream arqCidades)
         {
             if (inicio <= fim)
@@ -68,12 +76,12 @@ namespace _16164_16187_Projeto4ED
         {
             (sender as Panel).CreateGraphics().Clear((sender as Panel).BackColor);
             if (arvoreCidades != null)
-                arvoreCidades.DesenharArvore(true, arvoreCidades.raiz, pnlArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 200);
+                arvoreCidades.DesenharArvore(true, arvoreCidades.raiz, pnlArvore.Width / 2, 0, Math.PI / 2, Math.PI / 2.5, 300);
         }
 
         private void btnIncluirCidade_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(txtCidade.Text))
+            if (String.IsNullOrWhiteSpace(txtCidade.Text)) // Se o nome indicado for vazio ou só espaço branco
             {
                 MessageBox.Show("Insira o nome da cidade");
                 return;
@@ -82,7 +90,7 @@ namespace _16164_16187_Projeto4ED
             if (!txtCidade.Items.Contains(txtCidade.Text))
             {
                 MessageBox.Show("Por favor, indique a posição da cidade");
-                frmMapaCidade MapaCidade = new frmMapaCidade(ref arvoreCidades, ref listaCaminhos);
+                frmMapaCidade MapaCidade = new frmMapaCidade(ref arvoreCidades); // Cria o formulário para obter as razões da posição da cidade
                 MapaCidade.ShowDialog(this);
                 arvoreCidades.inserir(new Cidade(txtCidade.Text, MapaCidade.RazaoX, MapaCidade.RazaoY));
                 txtCidade.Items.Add(txtCidade.Text);
@@ -98,9 +106,9 @@ namespace _16164_16187_Projeto4ED
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            if (arvoreCidades.ApagarNo(new Cidade(txtCidade.Text,0D,0D)))
+            if (arvoreCidades.ApagarNo(new Cidade(txtCidade.Text,0D,0D))) // Apaga a cidade escolhida da árvore
             {
-                listaCaminhos.ExcluirCidade(txtCidade.Text);
+                listaCaminhos.ExcluirCidade(txtCidade.Text); // Apaga todos os caminhos relacionados a cidade excluída
                 MessageBox.Show("Cidade excluída com sucesso");
                 txtCidade.Items.Remove(txtCidade.Text);
                 cbxDestino.Items.Remove(txtCidade.Text);
@@ -120,15 +128,15 @@ namespace _16164_16187_Projeto4ED
 
         private void frmManutCidade_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.Truncate);
-            RegistroCidade regCidade = new RegistroCidade();
-            GravarArquivoCidade(ref arqCidades, ref arvoreCidades.raiz, ref regCidade);
+            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.Truncate); // Abre os arquivos para escrita e
+            RegistroCidade regCidade = new RegistroCidade();                    // apaga tudo que estivesse neles anteriormente
+            GravarArquivoCidade(ref arqCidades, ref arvoreCidades.raiz, ref regCidade); // Percurso inordem da árvore e escrita
             arqCidades.Close();
             FileStream arqCaminhos = new FileStream("arqCaminhos.cam", FileMode.Truncate);
             RegistroCaminho regCaminho = new RegistroCaminho();
             int indice = 0;
             listaCaminhos.IniciarPercursoSequencial();
-            while (listaCaminhos.PodePercorrer())
+            while (listaCaminhos.PodePercorrer()) // Percorre a lista sequencialmente e salva as informações
             {
                 regCaminho.GravarRegistro(arqCaminhos, indice, listaCaminhos.Atual.Info);
                 indice++;
@@ -173,7 +181,7 @@ namespace _16164_16187_Projeto4ED
 
         private void btnExcluirCaminho_Click(object sender, EventArgs e)
         {
-            if (cbxDestino.SelectedIndex < 0 || cbxPartida.SelectedIndex < 0 || numDistancia.Value <= 0)
+            if (cbxDestino.SelectedIndex < 0 || cbxPartida.SelectedIndex < 0)
             {
                 MessageBox.Show("Por favor, insira os dados corretamente");
                 return;

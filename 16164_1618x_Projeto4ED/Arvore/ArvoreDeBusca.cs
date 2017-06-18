@@ -269,6 +269,7 @@ namespace _16164_16187_Projeto4ED
                 Graphics g = OndeExibir.CreateGraphics();
 
                 Pen caneta = new Pen(Color.Red);
+                // Mede o tamanho da String para fazer uma melhor exibição
                 SizeF tamanhoF = OndeExibir.CreateGraphics().MeasureString(atual.Info.ToString(), new Font("Comic Sans", 12));
                 xf = (int)Math.Round(x + Math.Cos(angulo) * comprimento);
                 yf = (int)Math.Round(y + Math.Sin(angulo) * comprimento);
@@ -282,6 +283,7 @@ namespace _16164_16187_Projeto4ED
                                                   incremento * 0.60, comprimento * 0.8);
                 // sleep(100);
                 SolidBrush preenchimento = new SolidBrush(Color.Blue);
+                // Adapta o tamanho da elipse ao tamanho da String
                 g.FillEllipse(preenchimento, xf - tamanhoF.Width / 2, yf - tamanhoF.Height / 2 - 2, tamanhoF.Width, tamanhoF.Height + 4);
                 g.DrawString(Convert.ToString(atual.Info.ToString()), new Font("Comic Sans", 12),
                               new SolidBrush(Color.Yellow), xf - tamanhoF.Width / 2, yf - tamanhoF.Height / 2);

@@ -24,37 +24,42 @@ namespace _16164_16187_Projeto4ED
         private void frmBuscaCaminhos_Load(object sender, EventArgs e)
         {
             grafoCaminhos = new GrafoCidades(null);
-            cidades = new String[Grafo.NUM_VERTICES];
+            cidades = new String[GrafoCidades.NUM_VERTICES];
 
-            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.OpenOrCreate);
+            FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.OpenOrCreate); // abre o arquivo, criando-o se não existir
             RegistroCidade regCidade = new RegistroCidade();
-            for (int i = 0; i < arqCidades.Length / Cidade.TAMANHO_DO_REGISTRO; i++)
+            for (int i = 0; i < arqCidades.Length / Cidade.TAMANHO_DO_REGISTRO; i++) //Enquanto houver registros para ler, o faz
             {
                 Cidade novaCidade = new Cidade("", 0D, 0D);
-                regCidade.LerRegistro(arqCidades, i, ref novaCidade);
+                regCidade.LerRegistro(arqCidades, i, ref novaCidade); // lê o registro e o armazena em novaCidade
                 cidades[i] = novaCidade.ToString();
                 cbxDestino.Items.Add(novaCidade.ToString());
                 cbxOrigem.Items.Add(novaCidade.ToString());
-                grafoCaminhos.NovoVertice(novaCidade.ToString(), novaCidade);
+                grafoCaminhos.NovoVertice(novaCidade);
             }
-            arqCidades.Close();
+            arqCidades.Close(); // fecha o arquivo de cidades
 
-            FileStream arqCaminhos = new FileStream("arqCaminhos.cam", FileMode.OpenOrCreate);
+            FileStream arqCaminhos = new FileStream("arqCaminhos.cam", FileMode.OpenOrCreate);// abre o arquivo, criando-o se não existir
             RegistroCaminho regCaminho = new RegistroCaminho();
-            for (int i = 0; i < arqCaminhos.Length / Caminho.TAMANHO_DO_REGISTRO; i++)
+            for (int i = 0; i < arqCaminhos.Length / Caminho.TAMANHO_DO_REGISTRO; i++) //Enquanto houver registros para ler, o faz
             {
                 Caminho novoCaminho = new Caminho(new Cidade("", 0D, 0D), new Cidade("", 0D, 0D), int.MaxValue);
-                regCaminho.LerRegistro(arqCaminhos, i, ref novoCaminho);
+                regCaminho.LerRegistro(arqCaminhos, i, ref novoCaminho); // lê o registro e o armazena em novoCaminho
                 int cid1 = IndiceDe(novoCaminho.Saida.ToString());
                 int cid2 = IndiceDe(novoCaminho.Destino.ToString());
-                if (cid1 > 0 && cid2 > 0)
-                    grafoCaminhos.NovaAresta(cid1, cid2, novoCaminho.Distancia);
+                if (cid1 > 0 && cid2 > 0) // se as duas cidades existirem
+                    grafoCaminhos.NovaAresta(cid1, cid2, novoCaminho.Distancia); // cria uma novas aresta entre essa cidades
             }
-            arqCaminhos.Close();
+            arqCaminhos.Close(); //fecha o arquivo de caminhos
 
             panel1.Invalidate();
         }
 
+        /// <summary>
+        /// Retorna o indíce da cidade no vetor de cidades
+        /// </summary>
+        /// <param name="nomeDaCidade">Nome da cidade a ser procurada</param>
+        /// <returns>O indíce da cidade recebida no vetor ou -1 se ela não estiver cadastrada</returns>
         private int IndiceDe(String nomeDaCidade)
         {
             nomeDaCidade = nomeDaCidade.Trim();
@@ -72,14 +77,15 @@ namespace _16164_16187_Projeto4ED
 
         private void btnManutCidade_Click(object sender, EventArgs e)
         {
-            frmManutCidade ManutCidade = new frmManutCidade();
+            frmManutCidade ManutCidade = new frmManutCidade(); // chama o formulário de manutenção de cidades
             ManutCidade.ShowDialog(this);
 
             grafoCaminhos = new GrafoCidades(null);
-            cidades = new String[Grafo.NUM_VERTICES];
+            cidades = new String[GrafoCidades.NUM_VERTICES];
             cbxDestino.Items.Clear();
             cbxOrigem.Items.Clear();
 
+            // Lê os arquivos novamente para atualizar as alterações
             FileStream arqCidades = new FileStream("arqCidades.cid", FileMode.OpenOrCreate);
             RegistroCidade regCidade = new RegistroCidade();
             for (int i = 0; i < arqCidades.Length / Cidade.TAMANHO_DO_REGISTRO; i++)
@@ -89,7 +95,7 @@ namespace _16164_16187_Projeto4ED
                 cidades[i] = novaCidade.ToString();
                 cbxDestino.Items.Add(novaCidade.ToString());
                 cbxOrigem.Items.Add(novaCidade.ToString());
-                grafoCaminhos.NovoVertice(novaCidade.ToString(), novaCidade);
+                grafoCaminhos.NovoVertice(novaCidade);
             }
             arqCidades.Close();
 
@@ -106,7 +112,7 @@ namespace _16164_16187_Projeto4ED
             }
             arqCaminhos.Close();
 
-            panel1.Invalidate();
+            panel1.Invalidate(); // atualiza o panel1
         }
 
         private void btnPesquisar_Click(object sender, EventArgs e)
@@ -126,12 +132,12 @@ namespace _16164_16187_Projeto4ED
             txtCaminhos.Clear();
             Stack<Movimento> movs = null;
             if (rdbtnBacktracking.Checked)
-                movs = grafoCaminhos.BacktrackingMelhorCaminho(cbxOrigem.Text, cbxDestino.Text);
+                movs = grafoCaminhos.BacktrackingMelhorCaminho(cbxOrigem.Text, cbxDestino.Text); // obtém o melhor caminho por backtracking
 
-            if (movs != null && movs.Count > 0)
+            if (movs != null && movs.Count > 0) // se houver caminho entre as duas cidades
             {
                 Stack<Movimento> caminhosOrdenados = new Stack<Movimento>();
-                while (movs.Count > 0)
+                while (movs.Count > 0) // inverte a pilha de resultados
                     caminhosOrdenados.Push(movs.Pop());
                 Movimento mov = null;
                 int distancia = 0;

@@ -10,7 +10,11 @@ namespace _16164_16187_Projeto4ED
     {
         protected Cidade cidade;
 
-        public VerticeCidade (String label, Cidade info) : base(label)
+        /// <summary>
+        /// Guarda as informações dessa cidades e chama o construtor da classe base com o nome da cidade
+        /// </summary>
+        /// <param name="info">Cidade a ser incluída</param>
+        public VerticeCidade (Cidade info) : base(info.ToString())
         {
             cidade = info;
         }

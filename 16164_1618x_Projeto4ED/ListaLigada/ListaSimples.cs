@@ -37,14 +37,14 @@ namespace _16164_16187_Projeto4ED
             return -1;
         }
 
-        public void IniciarPercursoSequencial ()
+        public void IniciarPercursoSequencial()
         {
             primeiroAcessoDoPercurso = true;
             atual = primeiro;
             anterior = null;
         }
 
-        public bool PodePercorrer ()
+        public bool PodePercorrer()
         {
             if (EstaVazia)
                 return false;
@@ -54,7 +54,7 @@ namespace _16164_16187_Projeto4ED
                 primeiroAcessoDoPercurso = false;
                 return true;
             }
-            
+
             anterior = atual;
             atual = atual.Prox;
             if (atual != null)
@@ -63,7 +63,7 @@ namespace _16164_16187_Projeto4ED
             return false;
         }
 
-        public Dado RemoverPrimeiro ()
+        public Dado RemoverPrimeiro()
         {
             Dado result = primeiro.Info;
             primeiro = primeiro.Prox;
@@ -170,11 +170,11 @@ namespace _16164_16187_Projeto4ED
                 atual = null;
                 return false;
             }
-            
-// caso não tenha sido definido que a chave está fora dos limites de
-// chaves da lista, vamos procurar no seu interior
-// o apontador atual indica o primeiro nó da lista e consideraremos que
-// ainda não achou a chave procurada nem chegamos ao final da lista
+
+            // caso não tenha sido definido que a chave está fora dos limites de
+            // chaves da lista, vamos procurar no seu interior
+            // o apontador atual indica o primeiro nó da lista e consideraremos que
+            // ainda não achou a chave procurada nem chegamos ao final da lista
             bool achou = false;
             bool fim = false;
             // repete os comandos abaixo enquanto não achou o RA nem chegou ao
@@ -246,15 +246,15 @@ namespace _16164_16187_Projeto4ED
                 }
                 else
                     if (atual == ultimo)    // se vamos excluir o último nó
-                    {
-                        ultimo = anterior;
-                        ultimo.Prox = null;
-                    }
-                    else
-                    {
-                        anterior.Prox = atual.Prox;
-                        atual.Prox = null;
-                    }
+                {
+                    ultimo = anterior;
+                    ultimo.Prox = null;
+                }
+                else
+                {
+                    anterior.Prox = atual.Prox;
+                    atual.Prox = null;
+                }
                 return true;
             }
             return false;
@@ -263,14 +263,14 @@ namespace _16164_16187_Projeto4ED
         {
             var novo = new NoLista<Dado>(dados, null); // guarda dados no
                                                        // novo nó
-            // existeChave() encontrou intervalo de inclusão do novo nó
+                                                       // existeChave() encontrou intervalo de inclusão do novo nó
             anterior.Prox = novo; // liga anterior ao novo
             novo.Prox = atual; // e novo no atual
             if (anterior == ultimo) // se incluiu ao final da lista,
                 ultimo = novo; // atualiza o apontador ultimo
             quantosNos++; // incrementa número de nós da lista
         }
-      
+
         public void ordenar()
         {
             ListaSimples<Dado> ordenada = new ListaSimples<Dado>();

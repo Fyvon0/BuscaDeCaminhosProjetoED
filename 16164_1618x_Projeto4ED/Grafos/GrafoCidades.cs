@@ -12,7 +12,7 @@ namespace _16164_16187_Projeto4ED
 {
     class GrafoCidades
     {
-        protected const int NUM_VERTICES = 100;
+        public const int NUM_VERTICES = 100;
         protected VerticeCidade[] vertices;
         protected int[,] adjMatrix;
         protected int numVerts;
@@ -29,6 +29,10 @@ namespace _16164_16187_Projeto4ED
                     adjMatrix[j, k] = 0;
         }
 
+        /// <summary>
+        /// Percorre todas as cidades e as desenha na posição correta do Panel passado por parâmetro
+        /// </summary>
+        /// <param name="panel">Panel a ser desenhado</param>
         public void ExibirCidades (Panel panel)
         {
             Graphics g = panel.CreateGraphics();
@@ -42,12 +46,16 @@ namespace _16164_16187_Projeto4ED
             }
         }
 
+        /// <summary>
+        /// Desenha os caminhos entre as cidades e indica suas distâncias
+        /// </summary>
+        /// <param name="panel">Panel a ser desenhado</param>
         public void ExibirCaminhos(Panel panel)
         {
             Graphics g = panel.CreateGraphics();
             g.Clear(Color.White);
             Pen p = new Pen(Color.Gray, 3);
-            AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+            AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5); // Desenha as linhas com uma seta no final
             p.CustomEndCap = bigArrow;
             for (int i = 0; i < numVerts; i++)
                 for (int j = 0; j < numVerts; j++)
@@ -63,7 +71,7 @@ namespace _16164_16187_Projeto4ED
                     }
                 }
             
-            for (int i = 0; i < numVerts; i++)
+            for (int i = 0; i < numVerts; i++) // Desenha as cidades por cima dos caminhos
             {
                 Cidade atual = vertices[i].Info;
                 g.DrawEllipse(new Pen(Color.Black, 5F), (float)atual.RazaoX * panel.Width - 2.5F, (float)atual.RazaoY * panel.Height - 2.5F, 5F, 5F);
@@ -72,8 +80,14 @@ namespace _16164_16187_Projeto4ED
             }
         }
 
-        public int IndiceDe (String nomeCidade)
+        /// <summary>
+        /// Retorna o indíce de uma cidade no vetor de vértices a partir de seu nome
+        /// </summary>
+        /// <param name="nomeCidade">Nome da cidade a ser procurada</param>
+        /// <returns>O indíce da cidade no vetor de vértices, se ela já tiver sido incluída, e -1 caso ainda não tenha sido incluída</returns>
+        protected int IndiceDe(String nomeCidade)
         {
+            nomeCidade = nomeCidade.Trim();
             for (int i = 0; i < numVerts; i++)
                 if (vertices[i].rotulo == nomeCidade)
                     return i;
@@ -81,13 +95,27 @@ namespace _16164_16187_Projeto4ED
             return -1;
         }
 
+        /// <summary>
+        /// Retorna a distância da conexão direta entre duas cidades
+        /// </summary>
+        /// <param name="cid1">Cidade de partida</param>
+        /// <param name="cid2">Cidade destino</param>
+        /// <returns>A distância entre as duas cidades ou -1 se alguma das cidades não estiver cadastrada</returns>
         public int ConexaoDiretaEntre (String cid1, String cid2)
         {
             int cidade1 = IndiceDe(cid1);
             int cidade2 = IndiceDe(cid2);
+            if (cidade1 < 0 || cidade2 < 0)
+                return -1;
             return adjMatrix[cidade1, cidade2];
         }
 
+        /// <summary>
+        /// Busca o melhor caminho possível entre duas cidades usando Backtracking
+        /// </summary>
+        /// <param name="cidadeOrigem">Cidade de partida</param>
+        /// <param name="cidadeDestino">Cidade destino</param>
+        /// <returns>Pilha com todos os trajetos necessários para chegar de uma cidade a outra. Se retornar nula, não existe caminho entre as duas cidades</returns>
         public Stack<Movimento> BacktrackingMelhorCaminho(string cidadeOrigem, string cidadeDestino)
         {
             for (int i = 0; i < numVerts; i++)
@@ -100,31 +128,31 @@ namespace _16164_16187_Projeto4ED
             int saidaAtual = 0;
             cidadeAtual = IndiceDe(cidadeOrigem);
             while (!(cidadeAtual == IndiceDe(cidadeOrigem) && saidaAtual == numVerts && p.Count <= 0))
-            { // só sai do while quando tiver tentado todos os adjMatrix
+            { // só sai do while quando tiver tentado todos os caminhos
                 while (saidaAtual < numVerts && !achou)
                 {
-                    if (adjMatrix[cidadeAtual, saidaAtual] == 0)
-                        saidaAtual++;
+                    if (adjMatrix[cidadeAtual, saidaAtual] == 0) // se não houver conexão entre a cidadeAtual e a saidaAtual
+                        saidaAtual++; // tenta a próxima saída
                     else
-                        if (vertices[saidaAtual].foiVisitado)
-                        saidaAtual++;
+                        if (vertices[saidaAtual].foiVisitado) // Se já tentamos a saidaAtual
+                            saidaAtual++; // tenta a próxima saída
                     else
-                            if (saidaAtual == IndiceDe(cidadeDestino))
-                    {
-                        Movimento movim = new Movimento();
-                        movim.setValores(cidadeAtual, saidaAtual);
-                        p.Push(movim);
-                        achou = true;
-                    }
-                    else
-                    {
-                        Movimento movim = new Movimento();
-                        movim.setValores(cidadeAtual, saidaAtual);
-                        p.Push(movim);
-                        vertices[cidadeAtual].foiVisitado = true;
-                        cidadeAtual = saidaAtual;
-                        saidaAtual = 0;
-                    }
+                        if (saidaAtual == IndiceDe(cidadeDestino)) // Se chegamos aonde queríamos
+                        {
+                            Movimento movim = new Movimento();
+                            movim.setValores(cidadeAtual, saidaAtual);
+                            p.Push(movim);
+                            achou = true; // achamos uma das possíveis rotas
+                        }
+                        else
+                        {
+                            Movimento movim = new Movimento();
+                            movim.setValores(cidadeAtual, saidaAtual);
+                            p.Push(movim); // adicionamos o último movimento
+                            vertices[cidadeAtual].foiVisitado = true;
+                            cidadeAtual = saidaAtual; // vamos para a saidaAtual
+                            saidaAtual = 0; // procuramos novamente por novas saídas
+                        }
                 }
                 if (!achou)
                 {
@@ -137,7 +165,7 @@ namespace _16164_16187_Projeto4ED
                         saidaAtual++;
                     }
                 }
-                else // se achou um novo caminho, mede sua eficiência e o insere em ordem no vetor de resultado
+                else // se achou um novo caminho, mede sua eficiência e se for melhor, o coloca na pilha de resultado
                 {
                     Stack<Movimento> aux = new Stack<Movimento>();
                     double distanciaI = 0;
@@ -189,9 +217,9 @@ namespace _16164_16187_Projeto4ED
             return result;
         }
 
-        public void NovoVertice(string label, Cidade info)
+        public void NovoVertice(Cidade info)
         {
-            vertices[numVerts] = new VerticeCidade(label, info);
+            vertices[numVerts] = new VerticeCidade(info);
             numVerts++;
             if (dgv != null) // se foi passado como parâmetro um dataGridView para exibição
             { // se realiza o seu ajuste para a quantidade de vértices
@@ -201,6 +229,12 @@ namespace _16164_16187_Projeto4ED
             }
         }
 
+        /// <summary>
+        /// Adiciona uma nova conexão entre as cidades indicadas com a distância recebida
+        /// </summary>
+        /// <param name="start">Indíce da cidade de partida</param>
+        /// <param name="eend">Indíce da cidade destino</param>
+        /// <param name="distancia">Distância entre as duas cidades</param>
         public void NovaAresta(int start, int eend, int distancia)
         {
             if (distancia <= 0)

@@ -14,26 +14,29 @@ namespace _16164_16187_Projeto4ED
     {
         private int x, y;
         private GrafoCidades grafoMapa;
-        //private int indice;
-        //private Cidade[] vetorCidades;
 
-        public frmMapaCidade(ref ArvoreDeBusca<Cidade> cidades, ref ListaCaminhos caminhos)
+        /// <summary>
+        /// Inicializa as variáveis do formulário e monta o grafo a partir da árvore de cidades recebida
+        /// </summary>
+        /// <param name="cidades">Árvore das cidades que serão desenhadas no mapa</param>
+        public frmMapaCidade(ref ArvoreDeBusca<Cidade> cidades)
         {
             InitializeComponent();
             grafoMapa = new GrafoCidades(null);
-            //vetorCidades = new Cidade[cidades.QuantosNos];
-            //indice = 0;
             PercorrerArvore(ref cidades.raiz);
             pnlMapa.Invalidate();
         }
+
+        /// <summary>
+        /// Percorre a árvore e adiciona seus nós no grafo
+        /// </summary>
+        /// <param name="atual">Nó atual da árvore</param>
         private void PercorrerArvore (ref NoArvore<Cidade> atual)
         {
             if (atual != null)
             {
                 PercorrerArvore(ref atual.esquerdo);
-                //vetorCidades[indice] = atual.Info;
-                //indice++;
-                grafoMapa.NovoVertice(atual.Info.Nome, atual.Info);
+                grafoMapa.NovoVertice(atual.Info);
                 PercorrerArvore(ref atual.direito);
             }    
         }
@@ -43,12 +46,17 @@ namespace _16164_16187_Projeto4ED
             this.DialogResult = DialogResult.OK;
         }
 
+        /// <summary>
+        /// Escreve a posição atual do mouse e sua razão
+        /// </summary>
+        /// <param name="sender">Objeto que gerou o evento</param>
+        /// <param name="e">Parâmetros do evento</param>
         private void pnlMapa_MouseMove(object sender, MouseEventArgs e)
         {
             x = e.X;
             y = e.Y;
-            lblPosicoes.Text = x + "x" + y;
-            lblRazoes.Text = x / (Double)pnlMapa.Width + "x" + y / (Double)pnlMapa.Height;
+            lblPosicoes.Text = x + " x " + y;
+            lblRazoes.Text = x / (Double)pnlMapa.Width + " x " + y / (Double)pnlMapa.Height;
         }
 
         public Double RazaoX

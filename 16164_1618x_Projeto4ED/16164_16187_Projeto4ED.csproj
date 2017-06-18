@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arvore\ArvoreBinaria.cs" />
     <Compile Include="Arvore\ArvoreDeBusca.cs" />
     <Compile Include="Caminho.cs" />
     <Compile Include="Cidade.cs" />
@@ -74,7 +73,6 @@
       <DependentUpon>frmManutCidade.cs</DependentUpon>
     </Compile>
     <Compile Include="Arvore\NoArvore.cs" />
-    <Compile Include="Grafos\Grafo.cs" />
     <Compile Include="ListaLigada\ListaSimples.cs" />
     <Compile Include="ListaLigada\NoLista.cs" />
     <Compile Include="Program.cs" />

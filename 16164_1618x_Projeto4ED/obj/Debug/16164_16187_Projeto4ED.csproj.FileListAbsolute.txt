@@ -1,3 +1,11 @@
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.exe.config
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\16164_1618x_Projeto4ED.exe
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\16164_1618x_Projeto4ED.pdb
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\16164_16187_Projeto4ED.csprojResolveAssemblyReference.cache
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmBuscaCaminhos.resources
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmManutCidade.resources
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmMapaCidade.resources
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\_16164_1618x_Projeto4ED.Properties.Resources.resources
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\16164_16187_Projeto4ED.csproj.GenerateResource.Cache
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.exe
+F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.pdb
