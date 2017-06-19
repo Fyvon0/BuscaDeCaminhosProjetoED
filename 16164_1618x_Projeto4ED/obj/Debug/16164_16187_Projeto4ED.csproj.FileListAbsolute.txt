@@ -9,3 +9,14 @@ F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\o
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\obj\Debug\16164_16187_Projeto4ED.csproj.GenerateResource.Cache
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.exe
 F:\Técnico\Programação Visual\16164_16187_Projeto4ED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.pdb
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.exe.config
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.exe
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\bin\Debug\16164_1618x_Projeto4ED.pdb
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\16164_16187_Projeto4ED.csprojResolveAssemblyReference.cache
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmBuscaCaminhos.resources
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmManutCidade.resources
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\_16164_16187_Projeto4ED.frmMapaCidade.resources
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\_16164_1618x_Projeto4ED.Properties.Resources.resources
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\16164_16187_Projeto4ED.csproj.GenerateResource.Cache
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\16164_1618x_Projeto4ED.exe
+C:\Users\Lucas Valente\Desktop\Projetos\escola\BuscaDeCaminhosProjetoED\16164_1618x_Projeto4ED\obj\Debug\16164_1618x_Projeto4ED.pdb

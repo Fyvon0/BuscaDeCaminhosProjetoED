@@ -217,6 +217,96 @@ namespace _16164_16187_Projeto4ED
             return result;
         }
 
+        /// <summary>
+        /// Busca o melhor caminho possível entre duas cidades usando Backtracking por recursão
+        /// </summary>
+        /// <param name="cidadeOrigem">Cidade de partida</param>
+        /// <param name="cidadeDestino">Cidade destino</param>
+        /// <returns>Pilha com todos os trajetos necessários para chegar de uma cidade a outra. Se retornar vazia, não existe caminho entre as duas cidades</returns>
+        public Stack<Movimento> RecursaoMelhorCaminho(string cidadeOrigem, string cidadeDestino)
+        {
+            // Prepara para a recursão
+            for (int i = 0; i < numVerts; i++)
+                vertices[i].foiVisitado = false;
+
+            return RecursaoMelhorCaminho(IndiceDe(cidadeOrigem), IndiceDe(cidadeDestino));
+        }
+
+        /// <summary>
+        /// Overload utilizada por sua versão pública para encontrar recursivamente o melhor caminho
+        /// </summary>
+        /// <param name="caminhoAtual">Pilha com o caminho até agora</param>
+        /// <param name="cidadeOrigem">Índice da cidade de partida</param>
+        /// <param name="cidadeDestino">Índice da cidade de destino</param>
+        /// <returns>Pilha com todos os trajetos necessários para chegar de uma cidade a outra. Se retornar vazia, não existe caminho entre as duas cidades</returns>
+        protected Stack<Movimento> RecursaoMelhorCaminho(int cidadeOrigem, int cidadeDestino)
+        {
+            double custo = double.MaxValue;
+            Stack<Movimento> ret = new Stack<Movimento>();
+
+            vertices[cidadeOrigem].foiVisitado = true; // Evita que suas chamadas filhas voltem de cidade e entrem em loop
+
+            // Caso haja conexão direta entre a cidade atual e a cidade de destino e esta conexão for melhor que o melhor caminho até agora,
+            // a consideramos o melhor caminho
+            if (adjMatrix[cidadeOrigem, cidadeDestino] != 0)
+            {
+                Movimento m = new Movimento();
+                m.setValores(cidadeOrigem, cidadeDestino);
+                ret.Push(m);
+
+                custo = adjMatrix[cidadeOrigem, cidadeDestino];
+            }
+                
+
+            for (int saidaAtual = 0; saidaAtual < numVerts; saidaAtual++) // Testa o melhor caminho por todas as saídas
+            {
+                if (adjMatrix[cidadeOrigem, saidaAtual] == 0) // Não há saída da cidade de origem pela saidaAtual
+                    continue;
+
+                // Nunca passa duas vezes pelo mesmo local. Serve como condição de saída, já que, caso todas as saídas já tenham sido visitadas,
+                // o método não se chama novamente.
+                if (vertices[saidaAtual].foiVisitado)
+                    continue;
+
+                Stack<Movimento> caminhoEncontrado = RecursaoMelhorCaminho(saidaAtual, cidadeDestino);
+
+                if (caminhoEncontrado.Count <= 0) // Caso não encontrou caminho, a saída nem precisa ser avaliada
+                    continue;
+
+                // Avalia a eficácia do caminho
+                Stack<Movimento> aux = new Stack<Movimento>();
+                double custoAtual = 0;
+                while (caminhoEncontrado.Count > 0)
+                {
+                    Movimento m = caminhoEncontrado.Pop();
+                    custoAtual += adjMatrix[m.getCidade(), m.getSaida()];
+                    aux.Push(m);
+                }
+
+                custoAtual += adjMatrix[cidadeOrigem, saidaAtual];
+
+                // Se o caminho encontrado for o melhor até agora, o armazenamos
+                if (custoAtual < custo) 
+                {
+                    ret.Clear();
+
+                    // Adiciona o trajeto da cidade de origem ate a saída onde se inicia o caminho
+                    Movimento m = new Movimento();
+                    m.setValores(cidadeOrigem, saidaAtual);
+                    ret.Push(m);
+
+                    while (aux.Count > 0) // Restaura o caminho encontrado, em ordem, na pilha de retorno
+                        ret.Push(aux.Pop());
+
+                    custo = custoAtual;
+                }
+            }
+
+            vertices[cidadeOrigem].foiVisitado = false; // Faz isso para permitir que outras chamadas (anteriores) utilizem aquele vértice
+
+            return ret;
+        }
+
         public void NovoVertice(Cidade info)
         {
             vertices[numVerts] = new VerticeCidade(info);
