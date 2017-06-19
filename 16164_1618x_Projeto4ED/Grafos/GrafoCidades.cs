@@ -111,7 +111,7 @@ namespace _16164_16187_Projeto4ED
         }
 
         /// <summary>
-        /// Busca o melhor caminho possível entre duas cidades usando Backtracking
+        /// Busca o melhor caminho possível entre duas cidades usando Backtracking iterativo
         /// </summary>
         /// <param name="cidadeOrigem">Cidade de partida</param>
         /// <param name="cidadeDestino">Cidade destino</param>
@@ -218,7 +218,7 @@ namespace _16164_16187_Projeto4ED
         }
 
         /// <summary>
-        /// Busca o melhor caminho possível entre duas cidades usando Backtracking por recursão
+        /// Busca o melhor caminho possível entre duas cidades usando recursão
         /// </summary>
         /// <param name="cidadeOrigem">Cidade de partida</param>
         /// <param name="cidadeDestino">Cidade destino</param>
@@ -235,7 +235,6 @@ namespace _16164_16187_Projeto4ED
         /// <summary>
         /// Overload utilizada por sua versão pública para encontrar recursivamente o melhor caminho
         /// </summary>
-        /// <param name="caminhoAtual">Pilha com o caminho até agora</param>
         /// <param name="cidadeOrigem">Índice da cidade de partida</param>
         /// <param name="cidadeDestino">Índice da cidade de destino</param>
         /// <returns>Pilha com todos os trajetos necessários para chegar de uma cidade a outra. Se retornar vazia, não existe caminho entre as duas cidades</returns>
@@ -266,6 +265,9 @@ namespace _16164_16187_Projeto4ED
                 // Nunca passa duas vezes pelo mesmo local. Serve como condição de saída, já que, caso todas as saídas já tenham sido visitadas,
                 // o método não se chama novamente.
                 if (vertices[saidaAtual].foiVisitado)
+                    continue;
+
+                if (saidaAtual == cidadeDestino) // Esta condição já fora tratada fora do for
                     continue;
 
                 Stack<Movimento> caminhoEncontrado = RecursaoMelhorCaminho(saidaAtual, cidadeDestino);
@@ -305,6 +307,76 @@ namespace _16164_16187_Projeto4ED
             vertices[cidadeOrigem].foiVisitado = false; // Faz isso para permitir que outras chamadas (anteriores) utilizem aquele vértice
 
             return ret;
+        }
+
+        /// <summary>
+        /// Busca o melhor caminho possível entre duas cidades usando o algorítmo iterativo de Dijkstra
+        /// </summary>
+        /// <param name="cidadeOrigem">Cidade de origem</param>
+        /// <param name="cidadeDestino"> Cidade destino</param>
+        /// <returns>Pilha com todos os trajetos necessários para chegar de uma cidade a outra. Se retornar vazia, não existe caminho entre as duas cidades</returns>
+        public Stack<Movimento> DijkstraMelhorCaminho(string cidadeOrigem, string cidadeDestino)
+        {
+            Dictionary<int, int> trajeto = new Dictionary<int, int>(); // Cidade atual, cidade anterior
+            int iCidadeDestino = IndiceDe(cidadeDestino);
+
+            double[] distancias = new double[numVerts];
+
+            for (int i=0; i< numVerts; i++) // Inicializa todas as distâncias com infinito
+            {
+                distancias[i] = double.MaxValue;
+                vertices[i].foiVisitado = false;
+            }
+
+            int cidadeAtual = IndiceDe(cidadeOrigem);
+
+            distancias[cidadeAtual] = 0; // A distância do início até ele mesmo é 0
+
+            for (int visitados = 0; visitados < numVerts; visitados++) // Visita todos os vértices
+            {
+                // Seleciona o próximo vértice a ser processado, pelo critério de menor distância
+                int custoAtual = int.MaxValue;
+                for (int i=0; i < numVerts; i++)
+                {
+                    if (vertices[i].foiVisitado)
+                        continue;
+
+                    if (distancias[i] < custoAtual)
+                        cidadeAtual = i;
+                }
+
+                vertices[cidadeAtual].foiVisitado = true;
+
+                for (int saidaAtual = 0; saidaAtual < numVerts; saidaAtual++) // Percorre as conexões da cidade atual
+                {
+                    if (adjMatrix[cidadeAtual, saidaAtual] == 0) // Caso não haja conexão entre as duas cidades
+                        continue;
+
+                    double dist = distancias[cidadeAtual] + adjMatrix[cidadeAtual, saidaAtual];
+
+                    if (dist < distancias[saidaAtual]) // Se encontrar um caminho ainda mais curto do atual, atualiza no vetor
+                    {
+                        distancias[saidaAtual] = dist;
+                        trajeto[saidaAtual] = cidadeAtual; // A cidade anterior à saidaAtual é cidadeAtual
+                    }
+                }
+            }
+
+            // Interpreta o vetor de trajeto
+            Movimento m;
+            Stack<Movimento> ret = new Stack<Movimento>();
+            
+            cidadeAtual = iCidadeDestino;
+            while (trajeto.ContainsKey(cidadeAtual))
+            {
+                m = new Movimento();
+                m.setValores(trajeto[cidadeAtual], cidadeAtual);
+                ret.Push(m);
+
+                cidadeAtual = trajeto[cidadeAtual];
+            }
+
+            return new Stack<Movimento>(ret);
         }
 
         public void NovoVertice(Cidade info)

@@ -133,10 +133,10 @@ namespace _16164_16187_Projeto4ED
             Stack<Movimento> movs = null;
             if (rdbtnBacktracking.Checked)
                 movs = grafoCaminhos.BacktrackingMelhorCaminho(cbxOrigem.Text, cbxDestino.Text); // obtém o melhor caminho por backtracking
-            //else if (rdbtnDijkstra.Checked)
-                
+            else if (rdbtnDijkstra.Checked)
+                movs = grafoCaminhos.DijkstraMelhorCaminho(cbxOrigem.Text, cbxDestino.Text); // obtém o melhor caminho por Dijkstra
             else if (rdbtnRecursao.Checked)
-                movs = grafoCaminhos.RecursaoMelhorCaminho(cbxOrigem.Text, cbxDestino.Text);
+                movs = grafoCaminhos.RecursaoMelhorCaminho(cbxOrigem.Text, cbxDestino.Text); // obtém o melhor caminho por recursão
 
             if (movs != null && movs.Count > 0) // se houver caminho entre as duas cidades
             {
